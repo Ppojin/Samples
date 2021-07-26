@@ -1,0 +1,15 @@
+version: '3.9' 
+services: 
+    gradle: 
+        container_name: gradle
+        # image: openjdk:11.0.4-jre-slim
+        image: gradle:7.1.1-jdk11
+        command: bash -c "while true; do echo hello; sleep 300; done"
+        ports:
+            - 8080:8080
+            - 8081:8081
+            - 6565:6565
+        volumes: 
+            - "./:/home/gradle"
+            - "/Users/mz01-hjhwang/.gradle:/home/gradle/.gradle"
+        working_dir: /home/gradle
