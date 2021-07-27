@@ -3,25 +3,25 @@ package com.example.ppojinsender.grpcClient;
 import com.fleta.calculator.ReactorCalculatorServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class GrpcStub {
-    static final String host = "localhost";
-    static final int grpcPort = 6565;
 
-    @Bean
-    public ManagedChannel channel() {
-        return ManagedChannelBuilder
-            .forAddress(this.host, this.grpcPort)
-            .usePlaintext()
-            .build();
-    }
+    @Value("${grpc.host}")
+    public String host;
+
+    @Value("${grpc.port}")
+    public int port;
 
     @Bean
     public ReactorCalculatorServiceGrpc.ReactorCalculatorServiceStub serviceStub() {
-        return ReactorCalculatorServiceGrpc.newReactorStub(channel());
+        return ReactorCalculatorServiceGrpc.newReactorStub(ManagedChannelBuilder
+                .forAddress(host, port)
+                .usePlaintext()
+                .build());
     }
 
 }

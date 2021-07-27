@@ -12,36 +12,6 @@ import java.io.IOException;
 public class PpojinReceiverApplication {
 
     public static void main(String[] args) {
-        try {
-            runGrpcServer();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-
         SpringApplication.run(PpojinReceiverApplication.class, args);
     }
-
-    private static void runGrpcServer() throws IOException, InterruptedException {
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> grpc server starting");
-
-        final int grpcPort = 6565;
-
-        // build gRPC server
-        Server server = ServerBuilder.forPort(grpcPort)
-                .addService(new CalculatorService())
-                .build();
-        // start
-        server.start();
-
-        // shutdown hook
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("gRPC server is shutting down!");
-            server.shutdown();
-        }));
-
-        server.awaitTermination();
-
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>> grpc server started");
-    }
-
 }
